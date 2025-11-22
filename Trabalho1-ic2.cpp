@@ -23,78 +23,164 @@ void lerArquivo(fstream &arqAno, string ano[], int tamanho)
 }
 
 //----------métodos de ordenação----------
+
+// variáveis globais (da pra passar por ponteiro, preferem como? to com preguiça de fazer ponteiro)
+int compDireta = 0;
+int movDireta = 0;
+int compBinaria = 0;
+int movBinaria = 0;
+int compSelecao = 0;
+int movSelecao = 0;
+int compBubble = 0;
+int movBubble = 0;
+int compHeap = 0;
+int movHeap = 0;
+int compMerge = 0;
+int movMerge = 0;
+int compQuick = 0;
+int movQuick = 0;
+
 // inserção direta
-void insercaoDireta(string ano[], int n) // n ta usando o ultimo do vetor pra ordenar
+void insercaoDireta(string ano[], int n) // comp e mov bem diferente
 {
+    compDireta = 0;
+    movDireta = 0;
     string a[n + 1];
     for (int i = 0; i < n; i++)
-    {
         a[i + 1] = ano[i];
-    }
 
     string x;
     int j;
 
     for (int i = 2; i <= n; i++)
     {
+        compDireta++;
+
         x = a[i];
         a[0] = x;
+        movDireta += 2;
         j = i;
-        while (x < a[j - 1])
+
+        while (true)
         {
+            compDireta++;
+            if (!(x < a[j - 1]))
+                break;
             a[j] = a[j - 1];
+            movDireta++;
             j--;
         }
+
         a[j] = x;
+        movDireta++;
     }
 
     for (int i = 0; i < n; i++)
-    {
         ano[i] = a[i + 1];
-    }
 }
 
 // inserção binaria
 
-void insercaoBin(string v[], int n)
+void insercaoBin(string v[], int n) // parece q ta sem sentinela, melhor fazer com. (nao vc chat, meu grupo) // ta com cerca de metade de mov e comp do q ta no drive, chat disse q ta perfeito
 {
+    compBinaria = 0;
+    movBinaria = 0;
+    compBinaria++;
     for (int i = 1; i < n; i++)
     {
         string temp = v[i];
         int esq = 0, dir = i;
-
+        compBinaria++;
         while (esq < dir)
         {
+            compBinaria++;
             int m = (esq + dir) / 2;
+            compBinaria++;
             if (v[m] <= temp)
+            {
+                compBinaria++;
                 esq = m + 1;
+            }
             else
                 dir = m;
         }
-
+        compBinaria++;
         for (int j = i; j > esq; j--)
+        {
+            compBinaria++;
+            movBinaria++;
             v[j] = v[j - 1];
-
+        }
+        movBinaria++;
         v[esq] = temp;
     }
 }
 
-// seleção
-void selecao(string ano[], int n)
+/*versão do chat do algoritimo dele:
+void insercaoBin(string v[], int n)
 {
-    int indiceMenor;
+    // Criar array auxiliar com sentinela
+    string a[n + 1];
+    for (int i = 0; i < n; i++)
+        a[i + 1] = v[i]; // copia v[0..n-1] para a[1..n]
+
+    int L, R, j, m;
     string x;
 
+    for (int i = 2; i <= n; i++)  // i = 2 até N
+    {
+        x = a[i];
+        L = 1;
+        R = i;
+
+        while (L < R)  // busca binária
+        {
+            m = (L + R) / 2;
+            if (a[m] <= x)
+                L = m + 1;
+            else
+                R = m;
+        }
+
+        j = i;
+        while (j > R)  // mover elementos
+        {
+            a[j] = a[j - 1];
+            j--;
+        }
+
+        a[R] = x;  // inserir
+    }
+
+    // Copiar de volta para o vetor original
+    for (int i = 0; i < n; i++)
+        v[i] = a[i + 1];
+}
+*/
+
+// seleção
+void selecao(string ano[], int n) // mesmo com comp e mov nos mesmos lugares dos vets, ta bem diferente o mov e um pouco o comp. chat disse q ta certo
+{
+    compSelecao = 0;
+    movSelecao = 0;
+    int indiceMenor;
+    string x;
+    compSelecao++;
     for (int i = 0; i < n - 1; i++)
     {
+        compSelecao++;
         indiceMenor = i;
+        compSelecao++;
         for (int j = i + 1; j < n; j++)
         {
+            compSelecao++; // do for
+            compSelecao++; // do if
             if (ano[j] < ano[indiceMenor])
             {
                 indiceMenor = j;
             }
         }
+        movSelecao += 3;
         x = ano[i];
         ano[i] = ano[indiceMenor];
         ano[indiceMenor] = x;
@@ -102,14 +188,24 @@ void selecao(string ano[], int n)
 }
 
 // bubblesort
-void bubble(string v[], int n)
+void bubble(string v[], int n) // POUQUISSIMO A MAIS
 {
+    compBubble = 0;
+    movBubble = 0;
+    compBubble++;
+
     for (int i = 0; i < n - 1; i++)
     {
+        compBubble++;
+        compBubble++;
+
         for (int j = 0; j < n - i - 1; j++)
         {
+            compBubble++;
+            compBubble++;
             if (v[j] > v[j + 1])
             {
+                movBubble += 3;
                 string tmp = v[j];
                 v[j] = v[j + 1];
                 v[j + 1] = tmp;
@@ -123,26 +219,37 @@ void heapfy(string ano[], int L, int R)
 {
     int i = L;
     int j = 2 * L;
+    movHeap++;
     string x = ano[L];
+    compHeap++;
     if (j < R && ano[j] < ano[j + 1])
     {
+        compHeap++;
         j++;
     }
+    compHeap++;
     while (j <= R && x < ano[j])
     {
+        compHeap++;
+        movHeap++;
         ano[i] = ano[j];
         i = j;
         j = 2 * i;
+        compHeap++;
         if (j < R && ano[j] < ano[j + 1])
         {
+            compHeap++;
             j++;
         }
     }
+    movHeap++;
     ano[i] = x;
 }
 
-void heapsort(string ano[], int n) // ta copiando o primeiro valor no vetor inteiro
+void heapsort(string ano[], int n)
 {
+    compHeap = 0;
+    movHeap = 0;
     string a[n + 1];
     for (int i = 0; i < n; i++)
     {
@@ -152,20 +259,25 @@ void heapsort(string ano[], int n) // ta copiando o primeiro valor no vetor inte
     string w;
     int L, R;
 
+    compHeap++;
     for (L = n / 2; L >= 1; L--)
     {
+        compHeap++;
         heapfy(a, L, n);
     }
 
+    compHeap++;
     for (R = n; R >= 2; R--)
     {
+        compHeap++;
+        movHeap++;
         w = a[1];
         a[1] = a[R];
         a[R] = w;
+        movHeap += 2;
         heapfy(a, 1, R - 1);
     }
 
-    // passando o vetor ordenado a para ano
     for (int i = 0; i < n; i++)
     {
         ano[i] = a[i + 1];
@@ -173,8 +285,9 @@ void heapsort(string ano[], int n) // ta copiando o primeiro valor no vetor inte
 }
 
 // fusao
-void merge(string ano[], int L, int h, int R, string c[])
+void merge(string ano[], int L, int h, int R, string c[]) // comp BEM errado e mov perfeito
 {
+    movMerge = 0;
     int i = L;
     int j = h + 1;
     int k = L - 1;
@@ -182,13 +295,16 @@ void merge(string ano[], int L, int h, int R, string c[])
     while (i <= h && j <= R)
     {
         k++;
+        compMerge++;
         if (ano[i] < ano[j])
         {
+            movMerge++;
             c[k] = ano[i];
             i++;
         }
         else
         {
+            movMerge++;
             c[k] = ano[j];
             j++;
         }
@@ -196,12 +312,14 @@ void merge(string ano[], int L, int h, int R, string c[])
     while (i <= h)
     {
         k++;
+        movMerge++;
         c[k] = ano[i];
         i++;
     }
     while (j <= R)
     {
         k++;
+        movMerge++;
         c[k] = ano[j];
         j++;
     }
@@ -222,8 +340,10 @@ void mpass(string ano[], int n, int p, string c[])
     }
     else
     {
+        compMerge++;
         for (j = i; j <= n; j++)
         {
+            compMerge++; // assim? o dos vets ta estranha essa parte do codigo
             c[j] = ano[j];
         }
     }
@@ -236,6 +356,7 @@ void mergesort(string ano[], int n)
     {
         a[i + 1] = ano[i];
     }
+    compMerge = 0;
 
     string c[n + 1];
     int p = 1;
@@ -280,19 +401,31 @@ void quickSort(string v[], int esq, int dir)
     int i = esq;
     int j = dir;
 
+    movQuick++;
     string x = v[(esq + dir) / 2];
     string w;
 
     do
     {
+        compQuick++;
         while (v[i] < x)
+        {
+            compQuick++;
             i++;
+        }
 
+        compQuick++;
         while (v[j] > x)
+        {
+            compQuick++;
             j--;
+        }
 
+        compQuick++;
         if (i <= j)
         {
+            compQuick++;
+            movQuick += 3;
             w = v[i];
             v[i] = v[j];
             v[j] = w;
@@ -302,11 +435,19 @@ void quickSort(string v[], int esq, int dir)
 
     } while (i <= j);
 
+    compQuick++;
     if (esq < j)
+    {
+        compQuick++;
         quickSort(v, esq, j);
+    }
 
+    compQuick++;
     if (i < dir)
+    {
+        compQuick++;
         quickSort(v, i, dir);
+    }
 }
 
 //----------Busca binária----------
@@ -361,114 +502,159 @@ int main()
     switch (op)
     {
     case 1:
-        insercaoDireta(ano_1, 100);
-        insercaoDireta(ano_2, 500);
-        insercaoDireta(ano_3, 1000);
-        insercaoDireta(ano_4, 5000);
-        insercaoDireta(ano_5, 10000);
         cout << "Ordenado com Insercao Direta!\n";
+        insercaoDireta(ano_1, 100);
+        cout << "Ano 1: Comparacoes: " << compDireta << " Movimentacoes: " << movDireta << endl;
+        insercaoDireta(ano_2, 500);
+        cout << "Ano 2: Comparacoes: " << compDireta << " Movimentacoes: " << movDireta << endl;
+        insercaoDireta(ano_3, 1000);
+        cout << "Ano 3: Comparacoes: " << compDireta << " Movimentacoes: " << movDireta << endl;
+        insercaoDireta(ano_4, 5000);
+        cout << "Ano 4: Comparacoes: " << compDireta << " Movimentacoes: " << movDireta << endl;
+        insercaoDireta(ano_5, 10000);
+        cout << "Ano 5: Comparacoes: " << compDireta << " Movimentacoes: " << movDireta << endl;
         break;
     case 2:
-        insercaoBin(ano_1, 100);
-        insercaoBin(ano_2, 500);
-        insercaoBin(ano_3, 1000);
-        insercaoBin(ano_4, 5000);
-        insercaoBin(ano_5, 10000);
         cout << "Ordenado com Insercao Binaria!\n";
+        insercaoBin(ano_1, 100);
+        cout << "Ano 1: Comparacoes: " << compBinaria << " Movimentacoes: " << movBinaria << endl;
+        insercaoBin(ano_2, 500);
+        cout << "Ano 2: Comparacoes: " << compBinaria << " Movimentacoes: " << movBinaria << endl;
+        insercaoBin(ano_3, 1000);
+        cout << "Ano 3: Comparacoes: " << compBinaria << " Movimentacoes: " << movBinaria << endl;
+        insercaoBin(ano_4, 5000);
+        cout << "Ano 4: Comparacoes: " << compBinaria << " Movimentacoes: " << movBinaria << endl;
+        insercaoBin(ano_5, 10000);
+        cout << "Ano 5: Comparacoes: " << compBinaria << " Movimentacoes: " << movBinaria << endl;
         break;
     case 3:
-        selecao(ano_1, 100);
-        selecao(ano_2, 500);
-        selecao(ano_3, 1000);
-        selecao(ano_4, 5000);
-        selecao(ano_5, 10000);
         cout << "Ordenado com Selecao!\n";
+        selecao(ano_1, 100);
+        cout << "Ano 1: Comparacoes: " << compSelecao << " Movimentacoes: " << movSelecao << endl;
+        selecao(ano_2, 500);
+        cout << "Ano 2: Comparacoes: " << compSelecao << " Movimentacoes: " << movSelecao << endl;
+        selecao(ano_3, 1000);
+        cout << "Ano 3: Comparacoes: " << compSelecao << " Movimentacoes: " << movSelecao << endl;
+        selecao(ano_4, 5000);
+        cout << "Ano 4: Comparacoes: " << compSelecao << " Movimentacoes: " << movSelecao << endl;
+        selecao(ano_5, 10000);
+        cout << "Ano 5: Comparacoes: " << compSelecao << " Movimentacoes: " << movSelecao << endl;
         break;
     case 4:
-        bubble(ano_1, 100);
-        bubble(ano_2, 500);
-        bubble(ano_3, 1000);
-        bubble(ano_4, 5000);
-        bubble(ano_5, 10000);
         cout << "Ordenado com BubbleSort!\n";
+        bubble(ano_1, 100);
+        cout << "Ano 1: Comparacoes: " << compBubble << " Movimentacoes: " << movBubble << endl;
+        bubble(ano_2, 500);
+        cout << "Ano 2: Comparacoes: " << compBubble << " Movimentacoes: " << movBubble << endl;
+        bubble(ano_3, 1000);
+        cout << "Ano 3: Comparacoes: " << compBubble << " Movimentacoes: " << movBubble << endl;
+        bubble(ano_4, 5000);
+        cout << "Ano 4: Comparacoes: " << compBubble << " Movimentacoes: " << movBubble << endl;
+        bubble(ano_5, 10000);
+        cout << "Ano 5: Comparacoes: " << compBubble << " Movimentacoes: " << movBubble << endl;
         break;
     case 5:
-        heapsort(ano_1, 100);
-        heapsort(ano_2, 500);
-        heapsort(ano_3, 1000);
-        heapsort(ano_4, 5000);
-        heapsort(ano_5, 10000);
         cout << "Ordenado com HeapSort!\n";
+        heapsort(ano_1, 100);
+        cout << "Ano 1: Comparacoes: " << compHeap << " Movimentacoes: " << movHeap << endl;
+        heapsort(ano_2, 500);
+        cout << "Ano 2: Comparacoes: " << compHeap << " Movimentacoes: " << movHeap << endl;
+        heapsort(ano_3, 1000);
+        cout << "Ano 3: Comparacoes: " << compHeap << " Movimentacoes: " << movHeap << endl;
+        heapsort(ano_4, 5000);
+        cout << "Ano 4: Comparacoes: " << compHeap << " Movimentacoes: " << movHeap << endl;
+        heapsort(ano_5, 10000);
+        cout << "Ano 5: Comparacoes: " << compHeap << " Movimentacoes: " << movHeap << endl;
         break;
     case 6:
-        mergesort(ano_1, 100);
-        mergesort(ano_2, 500);
-        mergesort(ano_3, 1000);
-        mergesort(ano_4, 5000);
-        mergesort(ano_5, 10000);
         cout << "Fusao\n";
+        mergesort(ano_1, 100);
+        cout << "Ano 1: Comparacoes: " << compMerge << " Movimentacoes: " << movMerge << endl;
+        mergesort(ano_2, 500);
+        cout << "Ano 2: Comparacoes: " << compMerge << " Movimentacoes: " << movMerge << endl;
+        mergesort(ano_3, 1000);
+        cout << "Ano 3: Comparacoes: " << compMerge << " Movimentacoes: " << movMerge << endl;
+        mergesort(ano_4, 5000);
+        cout << "Ano 4: Comparacoes: " << compMerge << " Movimentacoes: " << movMerge << endl;
+        mergesort(ano_5, 10000);
+        cout << "Ano 5: Comparacoes: " << compMerge << " Movimentacoes: " << movMerge << endl;
         break;
     case 7:
     {
-        //ano1
+        // ano1
         string a[101];
-        for (int i = 0; i < 100; i++)//essa loucura toda aq é pq tem(? eu acho q sim) q deixar o 0 de sentinela no v[], mas ano n deixa o 0 de sentinela, ent tem q usar um outro e dps passar os valores desse outro pro ano
+        for (int i = 0; i < 100; i++) // essa loucura toda aq é pq tem(? eu acho q sim) q deixar o 0 de sentinela no v[], mas ano n deixa o 0 de sentinela, ent tem q usar um outro e dps passar os valores desse outro pro ano
         {
             a[i + 1] = ano_1[i];
         }
+        compQuick = 0;
+        movQuick = 0;
         quickSort(a, 1, 100);
         for (int i = 0; i < 100; i++)
         {
             ano_1[i] = a[i + 1];
         }
-        
-        //ano2
+        cout << "Ano 1: Comparacoes: " << compQuick << " Movimentacoes: " << movQuick << endl;
+
+        // ano2
         string b[501];
         for (int i = 0; i < 500; i++)
         {
             b[i + 1] = ano_2[i];
         }
+        compQuick = 0;
+        movQuick = 0;
         quickSort(b, 1, 500);
         for (int i = 0; i < 500; i++)
         {
             ano_2[i] = b[i + 1];
         }
-        
-        //ano3
+        cout << "Ano 2: Comparacoes: " << compQuick << " Movimentacoes: " << movQuick << endl;
+
+        // ano3
         string c[1001];
         for (int i = 0; i < 1000; i++)
         {
             c[i + 1] = ano_3[i];
         }
+        compQuick = 0;
+        movQuick = 0;
         quickSort(c, 1, 1000);
         for (int i = 0; i < 1000; i++)
         {
             ano_3[i] = c[i + 1];
         }
-        
-        //ano3
+        cout << "Ano 3: Comparacoes: " << compQuick << " Movimentacoes: " << movQuick << endl;
+
+        // ano4
         string d[5001];
         for (int i = 0; i < 5000; i++)
         {
             d[i + 1] = ano_4[i];
         }
+        compQuick = 0;
+        movQuick = 0;
         quickSort(d, 1, 5000);
         for (int i = 0; i < 5000; i++)
         {
             ano_4[i] = d[i + 1];
         }
-        
-        //ano5
+        cout << "Ano 4: Comparacoes: " << compQuick << " Movimentacoes: " << movQuick << endl;
+
+        // ano5
         string e[10001];
         for (int i = 0; i < 10000; i++)
         {
             e[i + 1] = ano_5[i];
         }
+        compQuick = 0;
+        movQuick = 0;
         quickSort(e, 1, 10000);
         for (int i = 0; i < 10000; i++)
         {
             ano_5[i] = e[i + 1];
         }
+        cout << "Ano 5: Comparacoes: " << compQuick << " Movimentacoes: " << movQuick << endl;
 
         cout << "Ordenado com QuickSort!\n";
         break;
