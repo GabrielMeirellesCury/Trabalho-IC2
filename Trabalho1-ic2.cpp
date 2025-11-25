@@ -729,7 +729,7 @@ int main()
     ano5.close();
 
     // Pedro --> início do item 2 (cont. busca binária)
-    cout << "\n\n ===== Item 2: Busca Binária ===== \n";
+    cout << "\n\nItem 2: Busca Binária\n";
 
     string ord1[100], ord2[500], ord3[1000], ord4[5000], ord5[10000];
 
@@ -786,7 +786,7 @@ int main()
         cout << "Código NÃO encontrado em nenhum ano.\n";
     }
     
-    cout << "\n===== Fim do item 2! =====\n";
+    cout << "\nFim do item 2!\n";
 
     return 0;
 }
