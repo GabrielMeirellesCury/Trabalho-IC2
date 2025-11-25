@@ -526,7 +526,7 @@ int main()
 
     int op;
 
-    cout << "\nEscolha o método de ordenação" << endl;
+    cout << "\nEscolha o metodo de ordenacao" << endl;
     cout << "1 - Insercao Direta" << endl;
     cout << "2 - Insercao Binaria" << endl;
     cout << "3 - Selecao" << endl;
@@ -729,7 +729,7 @@ int main()
     ano5.close();
 
     // Pedro --> início do item 2 (cont. busca binária)
-    cout << "\n\nItem 2: Busca Binária\n";
+    cout << "\n\nItem 2: Busca Binaria\n";
 
     string ord1[100], ord2[500], ord3[1000], ord4[5000], ord5[10000];
 
@@ -744,7 +744,7 @@ int main()
     }
 
     string codigo;
-    cout << "\nDigite o código (10 letras) a ser pesquisado: ";
+    cout << "\nDigite o codigo (10 letras) a ser pesquisado: ";
     cin >> codigo;
     bool encontrado = false;
 
@@ -753,37 +753,37 @@ int main()
     // ano 1
     pos = buscaBinaria(ord1, 100, codigo);
     if (pos != -1) {
-        cout << "Encontrado no ANO 1, posição: " << pos << endl;
+        cout << "Encontrado no ANO 1, posicao: " << pos << endl;
         encontrado = true;
     }
 
     // ano 2
     pos = buscaBinaria(ord2, 500, codigo);
     if (pos != -1) {
-        cout << "Encontrado no ANO 2, posição: " << pos << endl;
+        cout << "Encontrado no ANO 2, posicao: " << pos << endl;
         encontrado = true;
     }
 
     // ano 3
     pos = buscaBinaria(ord3, 1000, codigo);
     if (pos != -1) {
-        cout << "Encontrado no ANO 3, posição: " << pos << endl;
+        cout << "Encontrado no ANO 3, posicao: " << pos << endl;
         encontrado = true;
     }
     // ano 4
     pos = buscaBinaria(ord4, 5000, codigo);
     if (pos != -1) {
-        cout << "Encontrado no ANO 4, posição: " << pos << endl;
+        cout << "Encontrado no ANO 4, posicao: " << pos << endl;
         encontrado = true;
     }
     // ano 5
     pos = buscaBinaria(ord5, 10000, codigo);
     if (pos != -1) {
-        cout << "Encontrado no ANO 5, posição: " << pos << endl;
+        cout << "Encontrado no ANO 5, posicao: " << pos << endl;
         encontrado = true;
     }
     if (!encontrado) {
-        cout << "Código NÃO encontrado em nenhum ano.\n";
+        cout << "Código NAO encontrado em nenhum ano.\n";
     }
     
     cout << "\nFim do item 2!\n";
