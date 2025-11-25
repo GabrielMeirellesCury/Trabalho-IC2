@@ -451,6 +451,44 @@ void quickSort(string v[], int esq, int dir)
 
 //----------Busca binária----------
 
+// Pedro --> busca binária (retorna índice ou -1)
+int buscaBinaria(string v[], int n, const string &chave) {
+    int esq = 0;
+    int dir = n - 1;
+
+    while (esq <= dir) {
+        int meio = esq + (dir - esq) / 2;
+
+        if (v[meio] == chave)
+            return meio;
+
+        if (v[meio] < chave)
+            esq = meio + 1;
+        else
+            dir = meio - 1;
+    }
+
+    return -1;
+}
+
+// Pedro --> lê um arquivo ordenado em um vetor fixo
+bool carregarOrdenado(const string &nome, string v[], int tamanho) {
+    ifstream arq(nome);
+    if (!arq.is_open()) return false;
+
+    string linha;
+    int i = 0;
+
+    while (getline(arq, linha) && i < tamanho) {
+        if (linha != "")  // ignora linhas vazias
+            v[i++] = linha;
+    }
+
+    arq.close();
+    return true; // não exige tamanho exato
+}
+
+
 int main()
 {
 
@@ -689,5 +727,66 @@ int main()
     ano3.close();
     ano4.close();
     ano5.close();
+
+    // Pedro --> início do item 2 (cont. busca binária)
+    cout << "\n\n ===== Item 2: Busca Binária ===== \n";
+
+    string ord1[100], ord2[500], ord3[1000], ord4[5000], ord5[10000];
+
+    bool ok1 = carregarOrdenado("ano_1_ord.txt", ord1, 100);
+    bool ok2 = carregarOrdenado("ano_2_ord.txt", ord2, 500);
+    bool ok3 = carregarOrdenado("ano_3_ord.txt", ord3, 1000);
+    bool ok4 = carregarOrdenado("ano_4_ord.txt", ord4, 5000);
+    bool ok5 = carregarOrdenado("ano_5_ord.txt", ord5, 10000);
+    if (!ok1 || !ok2 || !ok3 || !ok4 || !ok5) {
+        cout << "Erro ao carregar arquivos ordenados. Execute primeiro o item 1.\n";
+        return 0;
+    }
+
+    string codigo;
+    cout << "\nDigite o código (10 letras) a ser pesquisado: ";
+    cin >> codigo;
+    bool encontrado = false;
+
+    int pos;
+
+    // ano 1
+    pos = buscaBinaria(ord1, 100, codigo);
+    if (pos != -1) {
+        cout << "Encontrado no ANO 1, posição: " << pos << endl;
+        encontrado = true;
+    }
+
+    // ano 2
+    pos = buscaBinaria(ord2, 500, codigo);
+    if (pos != -1) {
+        cout << "Encontrado no ANO 2, posição: " << pos << endl;
+        encontrado = true;
+    }
+
+    // ano 3
+    pos = buscaBinaria(ord3, 1000, codigo);
+    if (pos != -1) {
+        cout << "Encontrado no ANO 3, posição: " << pos << endl;
+        encontrado = true;
+    }
+    // ano 4
+    pos = buscaBinaria(ord4, 5000, codigo);
+    if (pos != -1) {
+        cout << "Encontrado no ANO 4, posição: " << pos << endl;
+        encontrado = true;
+    }
+    // ano 5
+    pos = buscaBinaria(ord5, 10000, codigo);
+    if (pos != -1) {
+        cout << "Encontrado no ANO 5, posição: " << pos << endl;
+        encontrado = true;
+    }
+    if (!encontrado) {
+        cout << "Código NÃO encontrado em nenhum ano.\n";
+    }
+    
+    cout << "\n===== Fim do item 2! =====\n";
+
     return 0;
 }
