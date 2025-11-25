@@ -2,7 +2,6 @@
 #include <fstream>
 #include <string>
 using namespace std;
-#include <filesystem>
 
 //----------leiura de arquivos----------
 void lerArquivo(fstream &arqAno, string ano[], int tamanho)
@@ -81,7 +80,7 @@ void insercaoDireta(string ano[], int n) // comp e mov bem diferente
 
 // inserção binaria
 
-void insercaoBin(string v[], int n) // parece q ta sem sentinela, melhor fazer com. (nao vc chat, meu grupo) // ta com cerca de metade de mov e comp do q ta no drive, chat disse q ta perfeito
+void insercaoBin(string v[], int n) // parece q ta sem sentinela, melhor fazer com. // ta com cerca de metade de mov e comp do q ta no drive, chat disse q ta perfeito
 {
     compBinaria = 0;
     movBinaria = 0;
