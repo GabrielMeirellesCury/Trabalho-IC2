@@ -696,7 +696,17 @@ int main()
         cout << "Ordenado com QuickSort!\n";
         break;
     }
+    case 8:
+        cout << "Executando busca binária sem escolher um método de ordenação...\n";
+        cout << "Ordenando automaticamente usando QuickSort.\n";
 
+        quickSort(ano_1, 0, 99);
+        quickSort(ano_2, 0, 499);
+        quickSort(ano_3, 0, 999);
+        quickSort(ano_4, 0, 4999);
+        quickSort(ano_5, 0, 9999);
+        break;
+    
     default:
         cout << "Opcao invalida!\n";
     }
@@ -728,6 +738,11 @@ int main()
     ano4.close();
     ano5.close();
 
+    if (op < 1 || op > 8) {
+        cout << "\nVocê não escolheu um método de ordenação válido.\n";
+        cout << "A busca binária não pode ser executada.\n";
+        return 0;
+    }
     // Pedro --> início do item 2 (cont. busca binária)
     cout << "\n\nItem 2: Busca Binaria\n";
 
