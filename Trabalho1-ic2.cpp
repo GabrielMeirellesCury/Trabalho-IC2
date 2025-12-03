@@ -700,11 +700,11 @@ int main()
         cout << "Executando busca binária sem escolher um método de ordenação...\n";
         cout << "Ordenando automaticamente usando QuickSort.\n";
 
-        quickSort(ano_1, 0, 99);
-        quickSort(ano_2, 0, 499);
-        quickSort(ano_3, 0, 999);
-        quickSort(ano_4, 0, 4999);
-        quickSort(ano_5, 0, 9999);
+        mergesort(ano_1, 100);
+        mergesort(ano_2, 500);
+        mergesort(ano_3, 1000);
+        mergesort(ano_4, 5000);
+        mergesort(ano_5, 10000);
         break;
     
     default:
