@@ -40,10 +40,12 @@ int compQuick = 0;
 int movQuick = 0;
 
 // inserção direta
-void insercaoDireta(string ano[], int n) // comp e mov bem diferente
+
+void insercaoDireta(string ano[], int n)
 {
     compDireta = 0;
     movDireta = 0;
+
     string a[n + 1];
     for (int i = 0; i < n; i++)
         a[i + 1] = ano[i];
@@ -53,21 +55,23 @@ void insercaoDireta(string ano[], int n) // comp e mov bem diferente
 
     for (int i = 2; i <= n; i++)
     {
-        compDireta++;
-
         x = a[i];
+
         a[0] = x;
-        movDireta += 2;
+        movDireta++;
+
         j = i;
 
-        while (true)
+        compDireta++;
+
+        while (x < a[j - 1])
         {
-            compDireta++;
-            if (!(x < a[j - 1]))
-                break;
             a[j] = a[j - 1];
             movDireta++;
-            j--;
+
+            j = j - 1;
+
+            compDireta++;
         }
 
         a[j] = x;
@@ -79,62 +83,32 @@ void insercaoDireta(string ano[], int n) // comp e mov bem diferente
 }
 
 // inserção binaria
-
-void insercaoBin(string v[], int n) // parece q ta sem sentinela, melhor fazer com. // ta com cerca de metade de mov e comp do q ta no drive, chat disse q ta perfeito
+void insercaoBin(string v[], int n)
 {
     compBinaria = 0;
     movBinaria = 0;
-    compBinaria++;
-    for (int i = 1; i < n; i++)
-    {
-        string temp = v[i];
-        int esq = 0, dir = i;
-        compBinaria++;
-        while (esq < dir)
-        {
-            compBinaria++;
-            int m = (esq + dir) / 2;
-            compBinaria++;
-            if (v[m] <= temp)
-            {
-                compBinaria++;
-                esq = m + 1;
-            }
-            else
-                dir = m;
-        }
-        compBinaria++;
-        for (int j = i; j > esq; j--)
-        {
-            compBinaria++;
-            movBinaria++;
-            v[j] = v[j - 1];
-        }
-        movBinaria++;
-        v[esq] = temp;
-    }
-}
 
-/*versão do chat do algoritimo dele:
-void insercaoBin(string v[], int n)
-{
-    // Criar array auxiliar com sentinela
     string a[n + 1];
+
     for (int i = 0; i < n; i++)
-        a[i + 1] = v[i]; // copia v[0..n-1] para a[1..n]
+    {
+        a[i + 1] = v[i];
+    }
 
     int L, R, j, m;
     string x;
 
-    for (int i = 2; i <= n; i++)  // i = 2 até N
+    for (int i = 2; i <= n; i++)
     {
         x = a[i];
         L = 1;
         R = i;
 
-        while (L < R)  // busca binária
+        while (L < R)
         {
             m = (L + R) / 2;
+
+            compBinaria++;
             if (a[m] <= x)
                 L = m + 1;
             else
@@ -142,43 +116,47 @@ void insercaoBin(string v[], int n)
         }
 
         j = i;
-        while (j > R)  // mover elementos
+
+        while (j > R)
         {
+            movBinaria++;
             a[j] = a[j - 1];
             j--;
         }
 
-        a[R] = x;  // inserir
+        movBinaria++;
+        a[R] = x;
     }
 
-    // Copiar de volta para o vetor original
     for (int i = 0; i < n; i++)
+    {
         v[i] = a[i + 1];
+    }
 }
-*/
 
 // seleção
-void selecao(string ano[], int n) // mesmo com comp e mov nos mesmos lugares dos vets, ta bem diferente o mov e um pouco o comp. chat disse q ta certo
+void selecao(string ano[], int n)
 {
     compSelecao = 0;
     movSelecao = 0;
+
     int indiceMenor;
     string x;
-    compSelecao++;
+
     for (int i = 0; i < n - 1; i++)
     {
-        compSelecao++;
         indiceMenor = i;
-        compSelecao++;
+
         for (int j = i + 1; j < n; j++)
         {
-            compSelecao++; // do for
-            compSelecao++; // do if
+            compSelecao++;
+
             if (ano[j] < ano[indiceMenor])
             {
                 indiceMenor = j;
             }
         }
+
         movSelecao += 3;
         x = ano[i];
         ano[i] = ano[indiceMenor];
@@ -187,21 +165,17 @@ void selecao(string ano[], int n) // mesmo com comp e mov nos mesmos lugares dos
 }
 
 // bubblesort
-void bubble(string v[], int n) // POUQUISSIMO A MAIS
+void bubble(string v[], int n)
 {
     compBubble = 0;
     movBubble = 0;
-    compBubble++;
 
     for (int i = 0; i < n - 1; i++)
     {
-        compBubble++;
-        compBubble++;
-
         for (int j = 0; j < n - i - 1; j++)
         {
             compBubble++;
-            compBubble++;
+
             if (v[j] > v[j + 1])
             {
                 movBubble += 3;
@@ -214,150 +188,161 @@ void bubble(string v[], int n) // POUQUISSIMO A MAIS
 }
 
 // heapsort
-void heapfy(string ano[], int L, int R)
+void heapfy(string a[], int L, int R)
 {
     int i = L;
     int j = 2 * L;
-    movHeap++;
-    string x = ano[L];
-    compHeap++;
-    if (j < R && ano[j] < ano[j + 1])
+
+    movHeap++;              // leitura de x
+    string x = a[L];
+
+    // --- teste inicial dos filhos ---
+    compHeap++;             // j < R
+    if (j < R)
     {
-        compHeap++;
-        j++;
+        compHeap++;         // a[j] < a[j+1]
+        if (a[j] < a[j + 1])
+            j++;
     }
-    compHeap++;
-    while (j <= R && x < ano[j])
+
+    // --- laço principal ---
+    while (true)
     {
-        compHeap++;
+        compHeap++;         // j <= R ?
+        if (!(j <= R)) break;
+
+        compHeap++;         // x < a[j] ?
+        if (!(x < a[j])) break;
+
+        // movimentação
         movHeap++;
-        ano[i] = ano[j];
+        a[i] = a[j];
+
         i = j;
         j = 2 * i;
-        compHeap++;
-        if (j < R && ano[j] < ano[j + 1])
+
+        // teste dos filhos novamente
+        compHeap++;         // j < R ?
+        if (j < R)
         {
-            compHeap++;
-            j++;
+            compHeap++;     // a[j] < a[j+1] ?
+            if (a[j] < a[j + 1])
+                j++;
         }
     }
-    movHeap++;
-    ano[i] = x;
+
+    movHeap++;              // devolve x
+    a[i] = x;
 }
 
 void heapsort(string ano[], int n)
 {
     compHeap = 0;
     movHeap = 0;
+
     string a[n + 1];
     for (int i = 0; i < n; i++)
-    {
         a[i + 1] = ano[i];
-    }
 
     string w;
-    int L, R;
 
-    compHeap++;
-    for (L = n / 2; L >= 1; L--)
-    {
-        compHeap++;
+    // construir heap
+    for (int L = n / 2; L >= 1; L--)
         heapfy(a, L, n);
-    }
 
-    compHeap++;
-    for (R = n; R >= 2; R--)
+    // ordenar
+    for (int R = n; R >= 2; R--)
     {
-        compHeap++;
-        movHeap++;
+        movHeap += 3;   // troca a[1] com a[R]
         w = a[1];
         a[1] = a[R];
         a[R] = w;
-        movHeap += 2;
+
         heapfy(a, 1, R - 1);
     }
 
     for (int i = 0; i < n; i++)
-    {
         ano[i] = a[i + 1];
-    }
 }
 
 // fusao
-void merge(string ano[], int L, int h, int R, string c[]) // comp BEM errado e mov perfeito
+void merge(string ano[], int L, int h, int R, string c[])
 {
-    movMerge = 0;
     int i = L;
     int j = h + 1;
-    int k = L - 1;
+    int k = L;
 
     while (i <= h && j <= R)
     {
-        k++;
         compMerge++;
+
         if (ano[i] < ano[j])
         {
-            movMerge++;
             c[k] = ano[i];
+            movMerge++;
             i++;
         }
         else
         {
-            movMerge++;
             c[k] = ano[j];
+            movMerge++;
             j++;
         }
+        k++;
     }
+
     while (i <= h)
     {
-        k++;
-        movMerge++;
         c[k] = ano[i];
+        movMerge++;
         i++;
+        k++;
     }
+
     while (j <= R)
     {
-        k++;
-        movMerge++;
         c[k] = ano[j];
+        movMerge++;
         j++;
+        k++;
     }
 }
 
 void mpass(string ano[], int n, int p, string c[])
 {
-    int i, j;
-    i = 1;
+    int i = 1;
+
     while (i <= n - 2 * p + 1)
     {
         merge(ano, i, i + p - 1, i + 2 * p - 1, c);
         i += 2 * p;
     }
+
     if (i + p - 1 < n)
     {
         merge(ano, i, i + p - 1, n, c);
     }
     else
     {
-        compMerge++;
-        for (j = i; j <= n; j++)
+        for (int j = i; j <= n; j++)
         {
-            compMerge++; // assim? o dos vets ta estranha essa parte do codigo
             c[j] = ano[j];
+            movMerge++;
         }
     }
 }
 
 void mergesort(string ano[], int n)
 {
+    compMerge = 0;
+    movMerge = 0;
+
     string a[n + 1];
     for (int i = 0; i < n; i++)
-    {
         a[i + 1] = ano[i];
-    }
-    compMerge = 0;
 
     string c[n + 1];
+
     int p = 1;
     while (p < n)
     {
@@ -366,64 +351,40 @@ void mergesort(string ano[], int n)
         mpass(c, n, p, a);
         p *= 2;
     }
-    // passando o vetor ordenado a para ano
+
     for (int i = 0; i < n; i++)
-    {
-        ano[i] = a[i + 1]; // necesário pq a está com a posição 0 vazia, mas o ano não
-    }
+        ano[i] = a[i + 1];
 }
 
-// quicksort
-/*
-void quickSort(string v[], int esq, int dir) // ta completamente diferente doq ta no slide do tinos!!!! trocar pra versão dele
+void quickSort(string v[], int L, int R)
 {
-    if (esq < dir)
-    {
-        int p = esq, i = esq + 1, j = dir;
-        while (i <= j)
-        {
-            if (v[i] > v[p])
-                swap(v[i], v[j--]);
-            else
-                i++;
-        }
-
-        swap(v[p], v[j]);
-
-        quickSort(v, esq, j - 1);
-        quickSort(v, j + 1, dir);
-    }
-}*/
-
-void quickSort(string v[], int esq, int dir)
-{
-    int i = esq;
-    int j = dir;
+    int i = L;
+    int j = R;
 
     movQuick++;
-    string x = v[(esq + dir) / 2];
+    string x = v[(L + R) / 2];
     string w;
 
-    do
+    while (true)
     {
-        compQuick++;
-        while (v[i] < x)
+        while (true)
         {
             compQuick++;
+            if (!(v[i] < x))
+                break;
             i++;
         }
 
-        compQuick++;
-        while (v[j] > x)
+        while (true)
         {
             compQuick++;
+            if (!(x < v[j]))
+                break;
             j--;
         }
 
-        compQuick++;
         if (i <= j)
         {
-            compQuick++;
             movQuick += 3;
             w = v[i];
             v[i] = v[j];
@@ -432,21 +393,15 @@ void quickSort(string v[], int esq, int dir)
             j--;
         }
 
-    } while (i <= j);
-
-    compQuick++;
-    if (esq < j)
-    {
-        compQuick++;
-        quickSort(v, esq, j);
+        if (i > j)
+            break;
     }
 
-    compQuick++;
-    if (i < dir)
-    {
-        compQuick++;
-        quickSort(v, i, dir);
-    }
+    if (L < j)
+        quickSort(v, L, j);
+
+    if (i < R)
+        quickSort(v, i, R);
 }
 
 //----------Busca binária----------
