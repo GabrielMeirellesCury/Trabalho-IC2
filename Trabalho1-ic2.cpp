@@ -8,7 +8,7 @@ void lerArquivo(fstream &arqAno, string ano[], int tamanho)
 {
     if (!arqAno.is_open())
     {
-        cout << "Arquivo não foi aberto corretamente";
+        cout << "Arquivo nao foi aberto corretamente";
         return;
     }
 
@@ -22,8 +22,6 @@ void lerArquivo(fstream &arqAno, string ano[], int tamanho)
 }
 
 //----------métodos de ordenação----------
-
-// variáveis globais (da pra passar por ponteiro, preferem como? to com preguiça de fazer ponteiro)
 int compDireta = 0;
 int movDireta = 0;
 int compBinaria = 0;
@@ -40,7 +38,6 @@ int compQuick = 0;
 int movQuick = 0;
 
 // inserção direta
-
 void insercaoDireta(string ano[], int n)
 {
     compDireta = 0;
@@ -188,81 +185,67 @@ void bubble(string v[], int n)
 }
 
 // heapsort
-void heapfy(string a[], int L, int R)
+void heapfy(string ano[], int L, int R)
 {
     int i = L;
     int j = 2 * L;
-
-    movHeap++;              // leitura de x
-    string x = a[L];
-
-    // --- teste inicial dos filhos ---
-    compHeap++;             // j < R
-    if (j < R)
+    string x = ano[L];
+    movHeap++;
+    compHeap++;
+    if (j < R && ano[j] < ano[j + 1])
     {
-        compHeap++;         // a[j] < a[j+1]
-        if (a[j] < a[j + 1])
-            j++;
+        j++;
     }
-
-    // --- laço principal ---
-    while (true)
+    compHeap++;
+    while (j <= R && x < ano[j])
     {
-        compHeap++;         // j <= R ?
-        if (!(j <= R)) break;
-
-        compHeap++;         // x < a[j] ?
-        if (!(x < a[j])) break;
-
-        // movimentação
+        compHeap++;
+        ano[i] = ano[j];
         movHeap++;
-        a[i] = a[j];
-
         i = j;
         j = 2 * i;
-
-        // teste dos filhos novamente
-        compHeap++;         // j < R ?
-        if (j < R)
+        compHeap++;
+        if (j < R && ano[j] < ano[j + 1])
         {
-            compHeap++;     // a[j] < a[j+1] ?
-            if (a[j] < a[j + 1])
-                j++;
+            j++;
         }
     }
-
-    movHeap++;              // devolve x
-    a[i] = x;
+    movHeap++;
+    ano[i] = x;
 }
 
 void heapsort(string ano[], int n)
 {
     compHeap = 0;
     movHeap = 0;
-
     string a[n + 1];
     for (int i = 0; i < n; i++)
+    {
         a[i + 1] = ano[i];
+    }
 
     string w;
+    int L, R;
 
-    // construir heap
-    for (int L = n / 2; L >= 1; L--)
-        heapfy(a, L, n);
-
-    // ordenar
-    for (int R = n; R >= 2; R--)
+    compHeap++;
+    for (L = n / 2; L >= 1; L--)
     {
-        movHeap += 3;   // troca a[1] com a[R]
+        heapfy(a, L, n);
+    }
+
+    for (R = n; R >= 2; R--)
+    {
         w = a[1];
         a[1] = a[R];
         a[R] = w;
-
+        movHeap += 3;
         heapfy(a, 1, R - 1);
     }
 
     for (int i = 0; i < n; i++)
+    {
         ano[i] = a[i + 1];
+    }
 }
 
 // fusao
@@ -356,6 +339,7 @@ void mergesort(string ano[], int n)
         ano[i] = a[i + 1];
 }
 
+// quicksort
 void quickSort(string v[], int L, int R)
 {
     int i = L;
@@ -405,8 +389,6 @@ void quickSort(string v[], int L, int R)
 }
 
 //----------Busca binária----------
-
-// Pedro --> busca binária (retorna índice ou -1)
 int buscaBinaria(string v[], int n, const string &chave)
 {
     int esq = 0;
@@ -428,7 +410,7 @@ int buscaBinaria(string v[], int n, const string &chave)
     return -1;
 }
 
-// Pedro --> lê um arquivo ordenado em um vetor fixo
+// lê um arquivo ordenado em um vetor fixo
 bool carregarOrdenado(const string &nome, string v[], int tamanho)
 {
     ifstream arq(nome);
@@ -440,12 +422,12 @@ bool carregarOrdenado(const string &nome, string v[], int tamanho)
 
     while (getline(arq, linha) && i < tamanho)
     {
-        if (linha != "") // ignora linhas vazias
+        if (linha != "")
             v[i++] = linha;
     }
 
     arq.close();
-    return true; // não exige tamanho exato
+    return true;
 }
 
 int main()
@@ -579,7 +561,7 @@ int main()
     {
         // ano1
         string a[101];
-        for (int i = 0; i < 100; i++) // essa loucura toda aq é pq tem(? eu acho q sim) q deixar o 0 de sentinela no v[], mas ano n deixa o 0 de sentinela, ent tem q usar um outro e dps passar os valores desse outro pro ano
+        for (int i = 0; i < 100; i++)
         {
             a[i + 1] = ano_1[i];
         }
@@ -693,7 +675,7 @@ int main()
     ano4.close();
     ano5.close();
 
-    // Pedro --> início do item 2 (cont. busca binária)
+    // Início do item 2 (cont. busca binária)
     cout << "\n\nItem 2: Busca Binaria\n";
 
     string ord1[100], ord2[500], ord3[1000], ord4[5000], ord5[10000];
@@ -755,7 +737,7 @@ int main()
     }
     if (!encontrado)
     {
-        cout << "Código NAO encontrado em nenhum ano.\n";
+        cout << "Codigo NAO encontrado em nenhum ano.\n";
     }
 
     cout << "\nFim do item 2!\n";
